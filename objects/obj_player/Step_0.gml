@@ -51,12 +51,12 @@ if(!is_attacking_){
 move_and_contact_tiles(tile_map_id, 64, velocity_);
 
 //攻擊
-if(key_attack && (attack_times_ < 3)){
+if(key_attack && (attack_times_ < 3) && (!is_hitted_)){
 	if((sprite_index == spr_player_atk00) && (image_index > 5)){
 		sprite_index = spr_player_atk01;
 		image_index = 0;
 		attack_times_ = attack_times_ + 1;
-		if(is_attacking_){
+		if(is_attacking_ && instance_exists(atk_hitbox)){
 			with(atk_hitbox){
 				instance_destroy();
 				is_attacking_ = false;
@@ -66,7 +66,7 @@ if(key_attack && (attack_times_ < 3)){
 		sprite_index = spr_player_atk00;
 		image_index = 0;
 		attack_times_ = attack_times_ + 1;
-		if(is_attacking_){
+		if(is_attacking_ && instance_exists(atk_hitbox)){
 			with(atk_hitbox){
 				instance_destroy();
 				is_attacking_ = false;
@@ -76,7 +76,7 @@ if(key_attack && (attack_times_ < 3)){
 	is_attacking_ = true;
 }
 if(is_attacking_ && (image_index == 3)){
-	atk_hitbox = instance_create_layer(x, y, "Instances", obj_player_atk_hitbox);
+	atk_hitbox = instance_create_layer(x, y, "Bullet_Instances", obj_player_atk_hitbox);
 	atk_hitbox.image_xscale = direction_;
 }
 
@@ -92,4 +92,9 @@ if(alarm[0] < 0){
 			image_xscale = direction_;
 		}
 	}
+}
+
+//死亡
+if(hp <= 0){
+	instance_destroy();
 }
